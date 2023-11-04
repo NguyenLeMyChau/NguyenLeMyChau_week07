@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 
-export default function Screen02() {
+export default function Screen02({navigation}) {
     var [data, setData] = useState([]);
 
     useEffect(() => {
@@ -28,7 +28,11 @@ export default function Screen02() {
   {
     data.map((item) =>{
         return(
-                <View style = {styles.item}>
+                <Pressable style = {styles.item}
+                onPress={() => {
+                  navigation.navigate('Screen03')
+                }}
+                >
                     <Image 
                         source = {{uri: item.imgUrl}}
                         style = {{width:'100%', height:'100px', alignSelf:'center'}}
@@ -43,7 +47,7 @@ export default function Screen02() {
                         <Text>{item.address}</Text>    
                     </View>                            
 
-                </View>                              
+                </Pressable>                              
         )
     })
   }

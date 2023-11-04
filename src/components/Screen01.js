@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-export default function Screen01() {
+export default function Screen01({navigation}) {
     var [data, setData] = useState([]);
 
     useEffect(() => {
@@ -26,7 +26,11 @@ export default function Screen01() {
         })
     }
 
-    <TouchableOpacity style={styles.btnStart}>
+    <TouchableOpacity style={styles.btnStart}
+        onPress={() => {
+            navigation.navigate('Screen02')
+        }}
+    >
         <Text style={{color:'white', fontSize: 14, lineHeight: 22, fontWeight: 400}}>GET STARTED</Text>
     </TouchableOpacity>
 

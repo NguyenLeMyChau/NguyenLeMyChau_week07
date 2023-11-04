@@ -1,12 +1,46 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { TextInput } from 'react-native-web';
 
-export default function Screen03() {
+export default function Screen03({navigation}) {
     var [data, setData] = useState([]);
+    let initialCounters = [
+      0,0,0,0,0,0,0,0
+    ];
+    var [count, setCount] = useState(initialCounters);
+  
+    function handleClickPlus(index) {
+
+      const nextCounters = count.map((c, i) => {
+        if (i === index) {
+          // Increment the clicked counter
+          return c + 1;
+        } else {
+          // The rest haven't changed
+          return c;
+        }
+      });
+      setCount(nextCounters);
+     
+    }
+
+    function handleClickMinus(index) {
+      const nextCounters = count.map((c, i) => {
+        if (i === index) {
+          // Increment the clicked counter
+          return c - 1;
+        } else {
+          // The rest haven't changed
+          return c;
+        }
+      });
+      setCount(nextCounters);
+  }
+  
 
     useEffect(() => {
         fetch('https://653f48b09e8bd3be29e028fd.mockapi.io/week07screen03')
@@ -18,7 +52,11 @@ export default function Screen03() {
 
   return  <View style={{flex:1}}>
       <View style = {{width:'100%', height:40, marginTop:10, flexDirection:'row', display:'flex', alignItems:'center'}}>
-            <FontAwesome name="angle-left" size={25} style={{margin:30}}/>
+            <FontAwesome name="angle-left" size={25} style={{margin:30}}
+            onPress={() => {
+              navigation.navigate('Screen02')
+            }}
+            />
 
             <Text style={{fontSize: 24, fontWeight:'bold'}}>Drinks</Text>
 
@@ -26,9 +64,10 @@ export default function Screen03() {
 
       </View>
   {
-    data.map((item) =>{
+    data.map((item, index) =>{
         return(
                 <View style = {styles.item}>
+
                     <Image 
                         source = {{uri: item.imgUrl}}
                         style = {{width:60, height:60}}
@@ -39,15 +78,26 @@ export default function Screen03() {
                         <Text style={{top: 7, color:'#565E6C'}}><SimpleLineIcons name="control-play" size={15} style={{color:'#9095A0'}}/> ${item.price}</Text>
                     </View>
 
-                    <Entypo name="circle-with-minus" size={25} style={{color:'green'}}/>
-                         
-                    <Entypo name="circle-with-plus" size={25} style={{color:'green', left: 20}}/>
+
+                    <Entypo name="circle-with-minus" size={25} style={{color:'green'}} onClick={() => handleClickMinus(index)}/>
+
+                    <TextInput
+                    style={{width: 30, height: 30, fontSize: 16, paddingLeft: 10}}  
+                    value={count[index]}
+                    />
+              
+                    <Entypo name="circle-with-plus" size={25} style={{color:'green'}} onClick={() => handleClickPlus(index)}/>
+
 
                 </View>                              
         )
     })
   }
-  <TouchableOpacity style={styles.btnAddCart}>
+  <TouchableOpacity style={styles.btnAddCart}
+      onPress={() => {
+        navigation.navigate('Screen04')
+      }}
+  >
         <Text style={{color:'white', fontSize: 16, lineHeight: 26, fontWeight: 500}}>GO TO CART</Text>
     </TouchableOpacity>
 
